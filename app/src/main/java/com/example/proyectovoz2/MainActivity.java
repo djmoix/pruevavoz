@@ -13,9 +13,10 @@ import ai.api.android.AIService;
 import ai.api.model.AIError;
 import ai.api.model.AIResponse;
 import ai.api.model.Result;
+import java.lang.CharSequence;
 
 public class MainActivity extends AppCompatActivity implements AIListener {
-    private  AIService mAIService;
+    private AIService mAIService;
     private TextToSpeech mTextToSpeech;
 
     @Override
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity implements AIListener {
 
         }
     });
-    findViewById(R.id.floatingActionButton).setOnClickListener(new View.OnClickListener() {
+    findViewById(R.id.flActionButton).setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             mAIService.startListening();
@@ -48,10 +49,9 @@ public class MainActivity extends AppCompatActivity implements AIListener {
 
     @Override
     public void onResult(AIResponse response) {
-        Result result1=response.getResult();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            mTextToSpeech.speak((CharSequence) result1.getFulfillment(), TextToSpeech.QUEUE_FLUSH, null, null );
-        }
+        Result result=response.getResult();
+        mTextToSpeech.speak(result.getFulfillment().getSpeech(), TextToSpeech.QUEUE_FLUSH, null, null );
+
     }
 
     @Override
